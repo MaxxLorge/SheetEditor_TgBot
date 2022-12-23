@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SheetEditor", "SheetEditor\SheetEditor.csproj", "{31475D78-DD29-48AE-B160-0A36ACD83212}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SheetEditor.TelegramBot", "SheetEditor.TelegramBot\SheetEditor.TelegramBot.csproj", "{31475D78-DD29-48AE-B160-0A36ACD83212}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
