@@ -14,7 +14,8 @@ public class SetEmailCommandMessageHandler : CommandMessageHandlerBase
 
     public override string MessageKey => "setEmail";
 
-    public override async Task Handle(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    protected override async Task Handle(ITelegramBotClient botClient, Update update,
+        CancellationToken cancellationToken)
     {
         if (MessageWords.Length != 2)
         {

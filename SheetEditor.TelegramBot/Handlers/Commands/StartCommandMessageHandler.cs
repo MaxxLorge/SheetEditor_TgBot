@@ -14,7 +14,8 @@ public class StartCommandMessageHandler : CommandMessageHandlerBase
 
     public override string MessageKey => "/start";
 
-    public override async Task Handle(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    protected override async Task Handle(ITelegramBotClient botClient, Update update,
+        CancellationToken cancellationToken)
     {
         await SendMessage("Чтобы задать почту, введите команду '/setEmail {ваш gmail}'." +
                           " Этой почте будет выдаваться роль writer для всех созданных таблицы",

@@ -20,7 +20,8 @@ public class NewSpreadSheetCommandMessageHandler : CommandMessageHandlerBase
 
     public override string MessageKey => "/new";
 
-    public override async Task Handle(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    protected override async Task Handle(ITelegramBotClient botClient, Update update,
+        CancellationToken cancellationToken)
     {
         if (MessageWords.Length != 2)
         {

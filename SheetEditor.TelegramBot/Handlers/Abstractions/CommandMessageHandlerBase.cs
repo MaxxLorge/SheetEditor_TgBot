@@ -17,18 +17,18 @@ public abstract class CommandMessageHandlerBase : ICommandMessageHandler
     
     public abstract string MessageKey { get; }
 
-    protected ITelegramBotClient BotClient { get; private set; }
-    protected Message Message { get; private set; }
-    protected string MessageText => Message.Text;
+    protected ITelegramBotClient BotClient { get; private set; } = null!;
+    protected Message Message { get; private set; } = null!;
+    protected string MessageText => Message.Text!;
     protected long ChatId => Message.Chat.Id;
-    protected User TelegramUser => Message.From;
+    protected User TelegramUser => Message.From!;
 
     protected string[] MessageWords => MessageText?.Split(' ', StringSplitOptions.TrimEntries)
                                        ?? Array.Empty<string>();
 
     public async Task Process(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        Message = update.Message;
+        Message = update.Message!;
         BotClient = botClient;
         var userFromDb = await Context
             .Users
@@ -43,9 +43,9 @@ public abstract class CommandMessageHandlerBase : ICommandMessageHandler
         await Handle(botClient, update, cancellationToken);
     }
 
-    public abstract Task Handle(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken);
+    protected abstract Task Handle(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken);
 
-    public async Task SendMessage(string text, ParseMode? parseMode = null,
+    protected async Task SendMessage(string text, ParseMode? parseMode = null,
         CancellationToken cancellationToken = default)
     {
         await BotClient.SendTextMessageAsync(ChatId,
