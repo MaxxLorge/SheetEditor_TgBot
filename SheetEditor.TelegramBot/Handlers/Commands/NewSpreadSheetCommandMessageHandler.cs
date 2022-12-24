@@ -9,47 +9,38 @@ using Telegram.Bot.Types.Enums;
 
 namespace SheetEditor.Handlers.Commands;
 
-public class NewSpreadSheetCommandMessageHandler : ICommandMessageHandler
+public class NewSpreadSheetCommandMessageHandler : CommandMessageHandlerBase
 {
-    private readonly SheetEditorContext _context;
     private readonly ISheetHelper _sheetHelper;
 
-    public NewSpreadSheetCommandMessageHandler(SheetEditorContext context, ISheetHelper sheetHelper)
+    public NewSpreadSheetCommandMessageHandler(SheetEditorContext context, ISheetHelper sheetHelper) : base(context)
     {
-        _context = context;
         _sheetHelper = sheetHelper;
     }
 
-    public string MessageKey => "/new";
+    public override string MessageKey => "/new";
 
-    public async Task Process(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    public override async Task Handle(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        var message = update.Message;
-        var messageText = message?.Text;
-        var chatId = message?.Chat.Id;
-        if (messageText == null || chatId == null)
-            throw new InvalidOperationException();
-        var splited = messageText.Split(' ', StringSplitOptions.TrimEntries);
-
-        if (splited.Length != 2)
+        if (MessageWords.Length != 2)
         {
-            await botClient.SendTextMessageAsync(chatId,
+            await SendMessage(
                 "Неверный формат сообщения",
                 cancellationToken: cancellationToken);
             return;
         }
 
-        var dbUser = await _context.Users
-            .FirstOrDefaultAsync(e => e.TelegramId == message!.From!.Id, cancellationToken);
+        var dbUser = await Context.Users
+            .FirstOrDefaultAsync(e => e.TelegramId == TelegramUser.Id, cancellationToken);
         if (dbUser?.Email == null)
         {
-            await botClient.SendTextMessageAsync(chatId,
+            await SendMessage(
                 "Укажите почту командой /setEmail",
                 cancellationToken: cancellationToken);
             return;
         }
 
-        var title = splited[1];
+        var title = MessageWords[1];
         var spreadSheet = default(Spreadsheet);
         try
         {
@@ -57,22 +48,22 @@ public class NewSpreadSheetCommandMessageHandler : ICommandMessageHandler
         }
         catch
         {
-            await botClient.SendTextMessageAsync(chatId,
+            await SendMessage(
                 "Не удалось создать таблицу.",
                 cancellationToken: cancellationToken);
         }
 
-        await botClient.SendTextMessageAsync(chatId,
+        await SendMessage(
             $"Была создана таблица по <a href='{spreadSheet.SpreadsheetUrl}'>адресу</a>",
             ParseMode.Html,
             cancellationToken: cancellationToken);
 
-        _context.Spreadsheets.Add(new Data.Entities.Spreadsheet
+        Context.Spreadsheets.Add(new Data.Entities.Spreadsheet
         {
             Title = title,
             Url = spreadSheet.SpreadsheetUrl,
             SpreadsheetId = spreadSheet.SpreadsheetId
         });
-        await _context.SaveChangesAsync(cancellationToken);
+        await Context.SaveChangesAsync(cancellationToken);
     }
 }
