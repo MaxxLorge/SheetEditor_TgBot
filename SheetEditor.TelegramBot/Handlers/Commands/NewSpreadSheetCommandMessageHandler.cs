@@ -9,7 +9,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace SheetEditor.Handlers.Commands;
 
-public class NewSpreadSheetCommandMessageHandler : CommandMessageHandlerBase
+public class NewSpreadSheetCommandMessageHandler : CommandMessageHandlerBase, IHaveHelpDescription
 {
     private readonly ISheetHelper _sheetHelper;
 
@@ -19,7 +19,7 @@ public class NewSpreadSheetCommandMessageHandler : CommandMessageHandlerBase
         _sheetHelper = sheetHelper;
     }
 
-    public override string HelpDescription => "new {имя_таблицы} - создать новую таблицу с указанным названием";
+    public string HelpDescription => "<i>new {имя_таблицы}</i> - создать новую таблицу с указанным названием";
     public override string MessageKey => "new";
 
     protected override async Task Handle(ITelegramBotClient botClient, Update update,

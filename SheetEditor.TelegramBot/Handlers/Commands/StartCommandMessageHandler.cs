@@ -11,8 +11,7 @@ public class StartCommandMessageHandler : CommandMessageHandlerBase
     {
         
     }
-
-    public override string HelpDescription => "/start - запустить бота";
+    
     public override string MessageKey => "/start";
 
     protected override async Task Handle(ITelegramBotClient botClient, Update update,

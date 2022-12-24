@@ -6,14 +6,14 @@ using Telegram.Bot.Types;
 
 namespace SheetEditor.Handlers.Commands;
 
-public class SetEmailCommandMessageHandler : CommandMessageHandlerBase
+public class SetEmailCommandMessageHandler : CommandMessageHandlerBase, IHaveHelpDescription
 {
     public SetEmailCommandMessageHandler(SheetEditorContext context) : base(context)
     {
     }
 
-    public override string HelpDescription => "setEmail {gmail_почта} - задать почту. Эта почта будет иметь роль" +
-                                              " writer для всех созданных таблиц";
+    public string HelpDescription => "<i>setEmail {gmail_почта}</i> - задать почту. Эта почта будет иметь роль" +
+                                     " writer для всех созданных таблиц";
     public override string MessageKey => "setEmail";
 
     protected override async Task Handle(ITelegramBotClient botClient, Update update,

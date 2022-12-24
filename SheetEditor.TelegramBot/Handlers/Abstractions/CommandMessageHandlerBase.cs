@@ -15,8 +15,7 @@ public abstract class CommandMessageHandlerBase : ICommandMessageHandler
     {
         Context = context;
     }
-
-    public abstract string HelpDescription { get; }
+    
     public abstract string MessageKey { get; }
 
     protected ITelegramBotClient BotClient { get; private set; } = null!;
