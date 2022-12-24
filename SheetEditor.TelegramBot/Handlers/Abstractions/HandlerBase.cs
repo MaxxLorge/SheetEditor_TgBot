@@ -25,6 +25,7 @@ public abstract class HandlerBase
         TelegramUser = GetTelegramUser(update);
         var userFromDb = await Context
             .Users
+            .Include(e => e.Spreadsheets)
             .FirstOrDefaultAsync(e => e.TelegramId == TelegramUser.Id, cancellationToken);
 
         if (userFromDb == null)

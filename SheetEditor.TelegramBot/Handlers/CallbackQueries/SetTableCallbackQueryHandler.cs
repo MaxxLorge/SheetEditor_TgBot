@@ -12,7 +12,7 @@ public class SetTableCallbackQueryHandler : CallbackQueryHandlerBase
     {
         var spreadsheetId = CallbackArguments[1];
         var spreadSheet = ApplicationUser.Spreadsheets
-            .FirstOrDefault(e => e.SpreadsheetId == spreadsheetId);
+            .FirstOrDefault(e => e.Id == int.Parse(spreadsheetId));
 
         if (spreadSheet == null)
             throw new NotImplementedException();
