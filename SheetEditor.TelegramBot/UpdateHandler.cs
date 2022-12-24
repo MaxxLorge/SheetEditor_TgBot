@@ -38,17 +38,14 @@ public class UpdateHandler : IUpdateHandler
         var chatId = message.Chat.Id;
         Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
 
-        if (message.ReplyToMessage != null && _replyToMessageHandlers.ContainsKey(message.ReplyToMessage.Text))
-            await _replyToMessageHandlers[message.ReplyToMessage.Text]
-                .Process(botClient, update, cancellationToken);
-
-        if (!_commandMessageHandlers.ContainsKey(messageText))
+        var key = messageText.Split().First();
+        if (!_commandMessageHandlers.ContainsKey(key))
         {
             Console.WriteLine($"Неизвестная команда: {messageText}");
             return;
         }
 
-        await _commandMessageHandlers[messageText].Process(botClient, update, cancellationToken);
+        await _commandMessageHandlers[key].Process(botClient, update, cancellationToken);
     }
 
     public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -59,7 +56,6 @@ public class UpdateHandler : IUpdateHandler
                 => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
             _ => exception.ToString()
         };
-
         Console.WriteLine(errorMessage);
         return Task.CompletedTask;
     }

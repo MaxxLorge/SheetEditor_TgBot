@@ -38,7 +38,8 @@ public class StartCommandMessageHandler : ICommandMessageHandler
         await _sheetEditorContext.SaveChangesAsync(cancellationToken);
 
         await botClient.SendTextMessageAsync(update.Message!.Chat.Id,
-            "Введите почту:",
+            "Чтобы задать почту, введите команду '/setEmail {ваш gmail}'." +
+            " Этой почте будет выдаваться роль writer для всех созданных таблицы",
             replyMarkup: new ForceReplyMarkup(),
             cancellationToken: cancellationToken
         );
