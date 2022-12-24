@@ -1,6 +1,6 @@
 namespace SheetEditor.Data.Entities;
 
-public class User
+public class ApplicationUser
 {
     public int Id { get; set; }
     public long? TelegramId { get; set; }

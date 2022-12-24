@@ -10,6 +10,6 @@ public class SheetEditorContext : DbContext
         optionsBuilder.UseInMemoryDatabase("memory");
     }
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<ApplicationUser> Users { get; set; }
     public DbSet<Spreadsheet> Spreadsheets { get; set; }
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SheetEditor.Data;
+using SheetEditor.Data.Entities;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -14,7 +15,8 @@ public abstract class CommandMessageHandlerBase : ICommandMessageHandler
     {
         Context = context;
     }
-    
+
+    public abstract string HelpDescription { get; }
     public abstract string MessageKey { get; }
 
     protected ITelegramBotClient BotClient { get; private set; } = null!;
@@ -22,6 +24,7 @@ public abstract class CommandMessageHandlerBase : ICommandMessageHandler
     protected string MessageText => Message.Text!;
     protected long ChatId => Message.Chat.Id;
     protected User TelegramUser => Message.From!;
+    protected ApplicationUser ApplicationUser { get; private set; }
 
     protected string[] MessageWords => MessageText?.Split(' ', StringSplitOptions.TrimEntries)
                                        ?? Array.Empty<string>();
@@ -33,12 +36,13 @@ public abstract class CommandMessageHandlerBase : ICommandMessageHandler
         var userFromDb = await Context
             .Users
             .FirstOrDefaultAsync(e => e.TelegramId == TelegramUser.Id, cancellationToken);
-
+        
         if (userFromDb == null)
-            Context.Users.Add(new Data.Entities.User
+            userFromDb = Context.Users.Add(new ApplicationUser
             {
                 TelegramId = TelegramUser.Id
-            });
+            }).Entity;
+        ApplicationUser = userFromDb;
         await Context.SaveChangesAsync(cancellationToken);
         await Handle(botClient, update, cancellationToken);
     }

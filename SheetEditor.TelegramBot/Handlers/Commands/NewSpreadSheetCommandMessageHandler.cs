@@ -13,12 +13,14 @@ public class NewSpreadSheetCommandMessageHandler : CommandMessageHandlerBase
 {
     private readonly ISheetHelper _sheetHelper;
 
-    public NewSpreadSheetCommandMessageHandler(SheetEditorContext context, ISheetHelper sheetHelper) : base(context)
+    public NewSpreadSheetCommandMessageHandler(SheetEditorContext context,
+        ISheetHelper sheetHelper) : base(context)
     {
         _sheetHelper = sheetHelper;
     }
 
-    public override string MessageKey => "/new";
+    public override string HelpDescription => "new {имя_таблицы} - создать новую таблицу с указанным названием";
+    public override string MessageKey => "new";
 
     protected override async Task Handle(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)

@@ -12,6 +12,8 @@ public class SetEmailCommandMessageHandler : CommandMessageHandlerBase
     {
     }
 
+    public override string HelpDescription => "setEmail {gmail_почта} - задать почту. Эта почта будет иметь роль" +
+                                              " writer для всех созданных таблиц";
     public override string MessageKey => "setEmail";
 
     protected override async Task Handle(ITelegramBotClient botClient, Update update,
