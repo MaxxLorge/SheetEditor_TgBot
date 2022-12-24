@@ -227,3 +227,4 @@ AppPackages/
 
 # secrets
 secrets.json
+google-secrets.json

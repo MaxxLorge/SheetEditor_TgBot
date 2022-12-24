@@ -1,3 +1,4 @@
+using SheetEditor.Google;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
@@ -8,6 +9,15 @@ namespace SheetEditor;
 
 public class UpdateHandler : IUpdateHandler
 {
+    private string _email;
+    private string _title;
+    private readonly ISheetHelper _sheetHelper;
+
+    public UpdateHandler(ISheetHelper sheetHelper)
+    {
+        _sheetHelper = sheetHelper;
+    }
+    
     public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         // Only process Message updates: https://core.telegram.org/bots/api#message
@@ -16,31 +26,19 @@ public class UpdateHandler : IUpdateHandler
         // Only process text messages
         if (message.Text is not { } messageText)
             return;
-        
-        
         var chatId = message.Chat.Id;
 
         Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
-        
-        if (messageText == "menu")
-        {
-            ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
-            {
-                new KeyboardButton[] { "Help me", "Call me ☎️" },
-            })
-            {
-                ResizeKeyboard = true
-            };
 
-            Message keyboardMessage = await botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: "Choose a response",
-                replyMarkup: replyKeyboardMarkup,
+        if (messageText == "/start")
+            await botClient.SendTextMessageAsync(chatId,
+                "Введите вашу почту",
+                replyMarkup: new ReplyKeyboardRemove(),
                 cancellationToken: cancellationToken);
-        }
-
+            
+        
         // Echo received message text
-        Message sentMessage = await botClient.SendTextMessageAsync(
+        var sentMessage = await botClient.SendTextMessageAsync(
             chatId: chatId,
             text: "You said:\n" + messageText,
             cancellationToken: cancellationToken);
@@ -58,4 +56,5 @@ public class UpdateHandler : IUpdateHandler
         Console.WriteLine(errorMessage);
         return Task.CompletedTask;
     }
+
 }
