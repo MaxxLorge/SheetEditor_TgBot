@@ -1,7 +1,9 @@
 using Google.Apis.Drive.v3;
 using Google.Apis.Sheets.v4;
 using LightInject;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using SheetEditor.Data;
 using SheetEditor.Google;
 using Telegram.Bot;
 
@@ -14,10 +16,14 @@ public static class LightInjectExtensions
         container.RegisterAssembly(typeof(LightInjectExtensions).Assembly,
             lifetimeFactory: () => new PerScopeLifetime());
 
-        container.Register<IConfigurationRoot>(_ => new ConfigurationBuilder()
+        var configurationRoot = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .AddJsonFile("secrets.json")
-            .Build(), new PerContainerLifetime());
+            .Build();
+
+        container.Register<IConfigurationRoot>(_ => configurationRoot, new PerContainerLifetime());
+        container.Register<SheetEditorContext>(_ => new SheetEditorContext(
+            new DbContextOptionsBuilder().UseNpgsql(configurationRoot["ConnectionString"]).Options));
         
         container.Register<SheetsService>(_ =>
             GoogleServiceBuilder.Build<SheetsService>(AppDomain.CurrentDomain.FriendlyName, "google-secrets.json"));

@@ -5,9 +5,9 @@ using Telegram.Bot.Types;
 
 namespace SheetEditor.Handlers.Commands;
 
-public class StartCommandMessageHandler : CommandMessageHandlerBase
+public class StartMessageHandler : MessageHandlerBase
 {
-    public StartCommandMessageHandler(SheetEditorContext sheetEditorContext) : base(sheetEditorContext)
+    public StartMessageHandler(SheetEditorContext sheetEditorContext) : base(sheetEditorContext)
     {
         
     }

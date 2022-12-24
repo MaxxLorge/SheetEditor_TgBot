@@ -5,9 +5,18 @@ namespace SheetEditor.Data;
 
 public class SheetEditorContext : DbContext
 {
+    public SheetEditorContext(DbContextOptions optionsBuilder) : base(optionsBuilder)
+    {
+    }
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseInMemoryDatabase("memory");
+        optionsBuilder.EnableSensitiveDataLogging();
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // modelBuilder.ApplyConfigurationsFromAssembly(typeof(SheetEditorContext).Assembly);
     }
 
     public DbSet<ApplicationUser> Users { get; set; }

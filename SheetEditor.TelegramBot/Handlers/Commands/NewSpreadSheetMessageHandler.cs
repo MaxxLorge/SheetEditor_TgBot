@@ -9,17 +9,17 @@ using Telegram.Bot.Types.Enums;
 
 namespace SheetEditor.Handlers.Commands;
 
-public class NewSpreadSheetCommandMessageHandler : CommandMessageHandlerBase, IHaveHelpDescription
+public class NewSpreadSheetMessageHandler : MessageHandlerBase, IHaveHelpDescription
 {
     private readonly ISheetHelper _sheetHelper;
 
-    public NewSpreadSheetCommandMessageHandler(SheetEditorContext context,
+    public NewSpreadSheetMessageHandler(SheetEditorContext context,
         ISheetHelper sheetHelper) : base(context)
     {
         _sheetHelper = sheetHelper;
     }
 
-    public string HelpDescription => "<i>new {имя_таблицы}</i> - создать новую таблицу с указанным названием";
+    public string HelpDescription => "<b>new {имя_таблицы}</b> - создать новую таблицу с указанным названием";
     public override string MessageKey => "new";
 
     protected override async Task Handle(ITelegramBotClient botClient, Update update,
@@ -65,7 +65,8 @@ public class NewSpreadSheetCommandMessageHandler : CommandMessageHandlerBase, IH
         {
             Title = title,
             Url = spreadSheet.SpreadsheetUrl,
-            SpreadsheetId = spreadSheet.SpreadsheetId
+            SpreadsheetId = spreadSheet.SpreadsheetId,
+            ApplicationUser = ApplicationUser
         });
         await Context.SaveChangesAsync(cancellationToken);
     }

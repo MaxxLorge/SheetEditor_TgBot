@@ -6,11 +6,11 @@ using Telegram.Bot.Types.Enums;
 
 namespace SheetEditor.Handlers.Commands;
 
-public class HelpCommandMessageHandler : CommandMessageHandlerBase
+public class HelpMessageHandler : MessageHandlerBase
 {
     private readonly IEnumerable<IHaveHelpDescription> _handlers;
 
-    public HelpCommandMessageHandler(SheetEditorContext context,
+    public HelpMessageHandler(SheetEditorContext context,
         IEnumerable<IHaveHelpDescription> handlers) : base(context)
     {
         _handlers = handlers.DistinctBy(e => e.MessageKey);
@@ -28,6 +28,6 @@ public class HelpCommandMessageHandler : CommandMessageHandlerBase
 
         await SendMessage(message,
             ParseMode.Html,
-            cancellationToken);
+            cancellationToken: cancellationToken);
     }
 }
