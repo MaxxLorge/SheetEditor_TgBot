@@ -41,7 +41,7 @@ namespace SheetEditor.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("SheetEditor.Data.Entities.Spreadsheet", b =>
@@ -68,7 +68,7 @@ namespace SheetEditor.Data.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Spreadsheets");
+                    b.ToTable("Spreadsheets", (string)null);
                 });
 
             modelBuilder.Entity("SheetEditor.Data.Entities.Spreadsheet", b =>

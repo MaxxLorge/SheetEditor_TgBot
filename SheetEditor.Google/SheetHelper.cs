@@ -8,6 +8,7 @@ namespace SheetEditor.Google;
 public interface ISheetHelper
 {
     Task<Spreadsheet> CreateSpreadSheet(string title, string email);
+    Task ChangeCell(string spreadsheetId, string cellExpression, string expression);
 }
 
 public class SheetHelper : ISheetHelper
@@ -43,5 +44,26 @@ public class SheetHelper : ISheetHelper
             .ExecuteAsync();
 
         return newSpreadSheet;
+    }
+
+    public async Task ChangeCell(string spreadsheetId, string cellExpression, string expression)
+    {
+        var spreadSheet = await _sheetsService.Spreadsheets.Get(spreadsheetId).ExecuteAsync();
+
+        var body = new ValueRange
+        {
+            Range = cellExpression,
+            Values = new List<IList<object>>
+            {
+                new List<object>
+                {
+                    expression
+                }
+            }
+        };
+        var updateRequest = _sheetsService.Spreadsheets.Values.Update(body, spreadsheetId, cellExpression);
+        updateRequest.ValueInputOption =
+            SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+        await updateRequest.ExecuteAsync();
     }
 }

@@ -23,7 +23,8 @@ public static class LightInjectExtensions
 
         container.Register<IConfigurationRoot>(_ => configurationRoot, new PerContainerLifetime());
         container.Register<SheetEditorContext>(_ => new SheetEditorContext(
-            new DbContextOptionsBuilder().UseNpgsql(configurationRoot["ConnectionString"]).Options));
+                new DbContextOptionsBuilder().UseNpgsql(configurationRoot["ConnectionString"]).Options),
+            new PerScopeLifetime());
         
         container.Register<SheetsService>(_ =>
             GoogleServiceBuilder.Build<SheetsService>(AppDomain.CurrentDomain.FriendlyName, "google-secrets.json"));

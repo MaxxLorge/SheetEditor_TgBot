@@ -32,7 +32,7 @@ public class SelectSpreadsheetMessageHandler : MessageHandlerBase, IHaveHelpDesc
             foreach (var spreadsheet in spreadSheets)
                 keyboardButtons.Add(InlineKeyboardButton.WithCallbackData(
                     $"{spreadsheet.Title}({spreadsheet.SpreadsheetId})",
-                    $"setSpreadsheet {spreadsheet.Id}"));
+                    $"setSpreadsheet {spreadsheet.SpreadsheetId}"));
         }
 
         await SendMessage(message,
