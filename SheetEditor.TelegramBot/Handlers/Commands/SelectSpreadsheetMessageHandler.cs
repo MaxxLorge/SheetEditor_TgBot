@@ -21,7 +21,7 @@ public class SelectSpreadsheetMessageHandler : MessageHandlerBase, IHaveHelpDesc
     {
         var spreadSheets = ApplicationUser.Spreadsheets;
         string message;
-        var keyboardButtons = new List<InlineKeyboardButton>();
+        var keyboardButtons = new List<InlineKeyboardButton[]>();
         if (spreadSheets.Count == 0)
         {
             message = "Таблицы отстствуют";
@@ -30,11 +30,14 @@ public class SelectSpreadsheetMessageHandler : MessageHandlerBase, IHaveHelpDesc
         {
             message = $"Ваши таблицы:{Environment.NewLine}";
             foreach (var spreadsheet in spreadSheets)
-                keyboardButtons.Add(InlineKeyboardButton.WithCallbackData(
+                keyboardButtons.Add(new[]
+                {
+                    InlineKeyboardButton.WithCallbackData(
                     $"{spreadsheet.Title}({spreadsheet.SpreadsheetId})",
-                    $"setSpreadsheet {spreadsheet.SpreadsheetId}"));
+                    $"setSpreadsheet {spreadsheet.SpreadsheetId}")
+                });
         }
-
+        
         await SendMessage(message,
             ParseMode.Html,
             new InlineKeyboardMarkup(keyboardButtons),
