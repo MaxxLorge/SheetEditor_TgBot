@@ -27,10 +27,18 @@ public class UpdateHandler : IUpdateHandler
     public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         // Only process Message updates: https://core.telegram.org/bots/api#message
-        if (update.Type == UpdateType.Message)
-            await HandleTextMessage(botClient, update, cancellationToken);
-        if (update.Type == UpdateType.CallbackQuery)
-            await HandleCallbackQuery(botClient, update, cancellationToken);
+        try
+        {
+            if (update.Type == UpdateType.Message)
+                await HandleTextMessage(botClient, update, cancellationToken);
+            if (update.Type == UpdateType.CallbackQuery)
+                await HandleCallbackQuery(botClient, update, cancellationToken);
+        }
+        catch
+        {
+            await botClient.SendTextMessageAsync(update.Message.Chat.Id, "Произошла ошибка",
+                cancellationToken: cancellationToken);
+        }
     }
 
     public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)

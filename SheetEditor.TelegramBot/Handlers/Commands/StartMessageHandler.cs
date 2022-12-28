@@ -17,8 +17,7 @@ public class StartMessageHandler : MessageHandlerBase
     protected override async Task Handle(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
-        await SendMessage("Чтобы задать почту, введите команду '/setEmail {ваш gmail}'." +
-                          " Этой почте будет выдаваться роль writer для всех созданных таблицы",
+        await SendMessage("Для справки по командам наберите /help",
             cancellationToken: cancellationToken
         );
     }

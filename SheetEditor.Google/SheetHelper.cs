@@ -9,6 +9,8 @@ public interface ISheetHelper
 {
     Task<Spreadsheet> CreateSpreadSheet(string title, string email);
     Task ChangeCell(string spreadsheetId, string cellExpression, string expression);
+
+    Task<string> ReadCell(string spreadSheetId, string cell);
 }
 
 public class SheetHelper : ISheetHelper
@@ -65,5 +67,13 @@ public class SheetHelper : ISheetHelper
         updateRequest.ValueInputOption =
             SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
         await updateRequest.ExecuteAsync();
+    }
+
+    public async Task<string> ReadCell(string spreadSheetId, string cell)
+    {
+        var spreadSheet = await _sheetsService.Spreadsheets.Get(spreadSheetId).ExecuteAsync();
+
+        var value = await _sheetsService.Spreadsheets.Values.Get(spreadSheetId, cell).ExecuteAsync();
+        return value.Values?[0]?[0] as string;
     }
 }
