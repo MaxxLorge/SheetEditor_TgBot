@@ -26,7 +26,6 @@ public class UpdateHandler : IUpdateHandler
     
     public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        // Only process Message updates: https://core.telegram.org/bots/api#message
         try
         {
             if (update.Type == UpdateType.Message)
