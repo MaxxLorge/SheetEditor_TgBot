@@ -27,9 +27,9 @@ public static class LightInjectExtensions
             new PerScopeLifetime());
         
         container.Register<SheetsService>(_ =>
-            GoogleServiceBuilder.Build<SheetsService>(AppDomain.CurrentDomain.FriendlyName, "google-secrets.json"));
+            GoogleServiceBuilder.Build<SheetsService>(AppDomain.CurrentDomain.FriendlyName, "google_secrets.json"));
         container.Register<DriveService>(_ =>
-            GoogleServiceBuilder.Build<DriveService>(AppDomain.CurrentDomain.FriendlyName, "google-secrets.json"));
+            GoogleServiceBuilder.Build<DriveService>(AppDomain.CurrentDomain.FriendlyName, "google_secrets.json"));
         
         container.Register<ITelegramBotClient>(factory =>
             {
