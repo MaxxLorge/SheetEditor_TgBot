@@ -22,7 +22,8 @@ public class SetSpreadsheetCallbackQueryHandler : CallbackQueryHandlerBase
         await botClient.SendTextMessageAsync(
             CallbackQuery.Message.Chat.Id,
             $"Вы выбрали <a href='{spreadSheet.Url}'>таблицу</a>",
-            ParseMode.Html);
+            ParseMode.Html,
+            cancellationToken: cancellationToken);
     }
 
     public override string CallbackKey => "setSpreadsheet";

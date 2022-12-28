@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using SheetEditor.Data;
 using SheetEditor.Google;
@@ -23,14 +24,14 @@ public class ChangeCellMessageHandler : MessageHandlerBase, IHaveHelpDescription
     protected override async Task Handle(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
-        if (MessageWords.Length != 3)
+        if (MessageWords.Length < 3)
         {
             await SendMessage("Неверный формат команды", cancellationToken: cancellationToken);
             return;
         }
 
         var cell = MessageWords[1];
-        var expression = MessageWords[2];
+        var expression = Regex.Match(MessageText, @"(?<="").*(?="")").Value;
         var spreadSheet = await Context.Spreadsheets
             .FirstOrDefaultAsync(e => e.SpreadsheetId == ApplicationUser.CurrentSpreadsheet,
                 cancellationToken);
