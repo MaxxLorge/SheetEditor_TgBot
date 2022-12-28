@@ -28,10 +28,15 @@ public class UpdateHandler : IUpdateHandler
     {
         try
         {
-            if (update.Type == UpdateType.Message)
-                await HandleTextMessage(botClient, update, cancellationToken);
-            if (update.Type == UpdateType.CallbackQuery)
-                await HandleCallbackQuery(botClient, update, cancellationToken);
+            switch (update.Type)
+            {
+                case UpdateType.Message:
+                    await HandleTextMessage(botClient, update, cancellationToken);
+                    break;
+                case UpdateType.CallbackQuery:
+                    await HandleCallbackQuery(botClient, update, cancellationToken);
+                    break;
+            }
         }
         catch
         {
