@@ -30,7 +30,7 @@
         <None Update="secrets.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="google-secrets.json">
+        <None Update="google_secrets.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
