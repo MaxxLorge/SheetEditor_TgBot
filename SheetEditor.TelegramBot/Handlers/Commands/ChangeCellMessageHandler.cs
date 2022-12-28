@@ -41,6 +41,7 @@ public class ChangeCellMessageHandler : MessageHandlerBase, IHaveHelpDescription
             return;
         }
 
-        await _sheetHelper.ChangeCell(spreadSheet.SpreadsheetId, cell, expression);
+        await _sheetHelper.ChangeCell(spreadSheet.SpreadsheetId!, cell, expression);
+        await SendMessage("Значение установлено", cancellationToken: cancellationToken);
     }
 }
