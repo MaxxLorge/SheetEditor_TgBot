@@ -226,5 +226,5 @@ AppPackages/
 #####
 
 # secrets
-secrets.json
 google_secrets.json
+secrets.json
