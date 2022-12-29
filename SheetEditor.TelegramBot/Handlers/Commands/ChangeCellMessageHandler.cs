@@ -1,8 +1,8 @@
-using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using SheetEditor.Data;
 using SheetEditor.Google;
 using SheetEditor.Handlers.Abstractions;
+using SheetEditor.StaticData;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -18,7 +18,10 @@ public class ChangeCellMessageHandler : MessageHandlerBase, IHaveHelpDescription
         _sheetHelper = sheetHelper;
     }
 
-    public string HelpDescription => "<b>setCell {индекс ячейки} {выражение}</b> - изменяет значение в заданной ячейке";
+    public string HelpDescription =>
+        "<b>setCell {индекс ячейки} \"{выражение}\"</b> - изменяет значение в заданной ячейке." +
+        " Обратите внимание, что выражение должно быть внутри двойных кавычек. " +
+        "С помощью команды можно редактировать только одну ячейку";
     public override string MessageKey => "setCell";
 
     protected override async Task Handle(ITelegramBotClient botClient, Update update,
@@ -31,7 +34,7 @@ public class ChangeCellMessageHandler : MessageHandlerBase, IHaveHelpDescription
         }
 
         var cell = MessageWords[1];
-        var expression = Regex.Match(MessageText, @"(?<="").*(?="")").Value;
+        var expression = RegularExpressions.CharactersBetweenQuotes().Match(MessageText).Value;
         var spreadSheet = await Context.Spreadsheets
             .FirstOrDefaultAsync(e => e.SpreadsheetId == ApplicationUser.CurrentSpreadsheet,
                 cancellationToken);

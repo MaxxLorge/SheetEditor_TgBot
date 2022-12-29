@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SheetEditor.Data;
 using SheetEditor.Google;
 using SheetEditor.Handlers.Abstractions;
+using SheetEditor.StaticData;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -25,7 +26,7 @@ public class NewSpreadSheetMessageHandler : MessageHandlerBase, IHaveHelpDescrip
     protected override async Task Handle(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
-        if (MessageWords.Length != 2)
+        if (MessageWords.Length < 2)
         {
             await SendMessage(
                 "Неверный формат сообщения",
@@ -43,7 +44,7 @@ public class NewSpreadSheetMessageHandler : MessageHandlerBase, IHaveHelpDescrip
             return;
         }
 
-        var title = MessageWords[1];
+        var title = RegularExpressions.CharactersBetweenQuotes().Match(MessageText).Value;
         var spreadSheet = default(Spreadsheet);
         try
         {

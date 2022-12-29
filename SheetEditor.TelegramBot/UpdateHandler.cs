@@ -38,10 +38,11 @@ public class UpdateHandler : IUpdateHandler
                     break;
             }
         }
-        catch
+        catch (Exception e)
         {
             await botClient.SendTextMessageAsync(update.Message.Chat.Id, "Произошла ошибка",
                 cancellationToken: cancellationToken);
+            Console.WriteLine(e);
         }
     }
 
