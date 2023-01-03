@@ -1,0 +1,19 @@
+volumes:
+  psql:
+
+services:
+  psql:
+      image: postgres
+      volumes:
+        - psql:/var/lib/postgresql/data
+      ports:
+        - 5433:5432
+      environment:
+        - POSTGRES_PASSWORD=m35pn92x
+        - POSTGRES_DB=SheetEditor
+  app:
+    build: .
+    environment:
+      - CONNECTIONSTRING=Host=psql;Port=5432;Database=SheetEditor;Username=postgres;Password=m35pn92x
+    depends_on:
+      - psql
