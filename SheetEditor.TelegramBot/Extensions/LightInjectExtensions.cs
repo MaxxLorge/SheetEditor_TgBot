@@ -19,13 +19,14 @@ public static class LightInjectExtensions
         var configurationRoot = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .AddJsonFile("secrets.json")
+            .AddEnvironmentVariables()
             .Build();
 
         container.Register<IConfigurationRoot>(_ => configurationRoot, new PerContainerLifetime());
         container.Register<SheetEditorContext>(_ => new SheetEditorContext(
                 new DbContextOptionsBuilder().UseNpgsql(configurationRoot["ConnectionString"]).Options),
             new PerScopeLifetime());
-        
+
         container.Register<SheetsService>(_ =>
             GoogleServiceBuilder.Build<SheetsService>(AppDomain.CurrentDomain.FriendlyName, "google_secrets.json"));
         container.Register<DriveService>(_ =>
