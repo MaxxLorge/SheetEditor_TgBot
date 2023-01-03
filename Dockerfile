@@ -16,4 +16,4 @@ RUN dotnet publish "SheetEditor.TelegramBot.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "SheetEditor.TelegramBot.dll"]
+CMD ["dotnet", "SheetEditor.TelegramBot.dll"]
